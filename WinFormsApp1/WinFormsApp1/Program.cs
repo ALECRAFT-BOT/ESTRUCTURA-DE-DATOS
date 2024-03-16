@@ -83,11 +83,13 @@ namespace WinFormsApp1
             loginButton.Size = new Size(75, 23);
             loginButton.TabIndex = 4;
             loginButton.Text = "Ingresar";
+            loginButton.BackColor = Color.White;
             loginButton.Click += LoginButton_Click;
             // 
             // LoginForm
             // 
             ClientSize = new Size(327, 219);
+            this.BackColor = Color.LightBlue;
             Controls.Add(lblCurso);
             Controls.Add(lblAuthor);
             Controls.Add(lblTitle);
@@ -131,7 +133,7 @@ namespace WinFormsApp1
         public int DiasLaborados { get; set; }
         public DateTime FechaRegistro { get; set; }
 
-        public double SalarioDiario { get; set; }
+        public decimal SalarioDiario { get; set; }
     }
 
     public class Nomina : Trabajador
@@ -143,7 +145,7 @@ namespace WinFormsApp1
             trabajadores.Add(trabajador);
         }
 
-        public int CalcularSalario(int diasLaborados, int salarioDia)
+        public decimal CalcularSalario(decimal diasLaborados, decimal salarioDia)
         {
             return diasLaborados * salarioDia;
         }
@@ -176,10 +178,11 @@ namespace WinFormsApp1
 
         private void InitializeComponent()
         {
-
+            
 
             Text = "Formulario de Ingreso de Datos";
             ClientSize = new Size(700, 800);
+            this.BackColor = Color.LightBlue;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             StartPosition = FormStartPosition.CenterScreen;
             lblIdentificacion = new Label();
@@ -228,6 +231,8 @@ namespace WinFormsApp1
             txtSalarioDias.Enabled = false; // Deshabilitar el cuadro de texto
             Controls.Add(txtSalarioDias);
 
+            cmbCargo.SelectedIndexChanged += CmbCargo_SelectedIndexChanged;
+
             lblGenero = new Label();
             lblGenero.Text = "Género:";
             lblGenero.Location = new Point(10, 160);
@@ -246,23 +251,26 @@ namespace WinFormsApp1
             Controls.Add(lblDiasLaborados);
 
             nudDiasLaborados = new NumericUpDown();
-            nudDiasLaborados.Location = new Point(150, 190);
+            nudDiasLaborados.Location = new Point(150, 200);
             nudDiasLaborados.Minimum = 0; // Definir el valor mínimo permitido
             nudDiasLaborados.Maximum = 31; // Definir el valor máximo permitido
             Controls.Add(nudDiasLaborados);
 
             btnGuardar = new Button();
             btnGuardar.Text = "Guardar Registro";
+            btnGuardar.BackColor = Color.White;
             btnGuardar.Location = new Point(10, 250);
             btnGuardar.Click += BtnGuardar_Click;
             Controls.Add(btnGuardar);
             btnCalcularNomina = new Button();
             btnCalcularNomina.Text = "Calcular Nómina";
+            btnCalcularNomina.BackColor = Color.White;
             btnCalcularNomina.Location = new Point(140, 250);
             btnCalcularNomina.Click += BtnCalcularNomina_Click;
             Controls.Add(btnCalcularNomina);
             btnSalir = new Button();
             btnSalir.Text = "Salir de la Aplicación";
+            btnSalir.BackColor = Color.White;
             btnSalir.Location = new Point(270, 250);
             btnSalir.Click += BtnSalir_Click;
             Controls.Add(btnSalir);
@@ -270,12 +278,15 @@ namespace WinFormsApp1
 
         private void CmbCargo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Obtener el salario correspondiente al cargo seleccionado
-            string cargoSeleccionado = cmbCargo.SelectedItem.ToString();
-            decimal salarioDiario = ObtenerSalarioDiario(cargoSeleccionado);
+            if (cmbCargo.SelectedItem != null)
+            {
+                // Obtener el salario correspondiente al cargo seleccionado
+                string cargoSeleccionado = cmbCargo.SelectedItem.ToString();
+                decimal salarioDiario = ObtenerSalarioDiario(cargoSeleccionado);
 
-            // Mostrar el salario diario en el cuadro de texto
-            txtSalarioDias.Text = salarioDiario.ToString("C"); // Formatear como moneda
+                // Mostrar el salario diario en el cuadro de texto
+                txtSalarioDias.Text = salarioDiario.ToString("C"); // Formatear como moneda
+            }
         }
 
         private decimal ObtenerSalarioDiario(string cargo)
@@ -320,7 +331,7 @@ namespace WinFormsApp1
             nomina.Genero = cmbGenero.SelectedItem.ToString();
             nomina.Cargo = cmbCargo.SelectedItem.ToString();
             nomina.DiasLaborados = (int)nudDiasLaborados.Value;
-            nomina.SalarioDiario = (double)ObtenerSalarioDiario(nomina.Cargo); // Guardar el salario diario en la clase Nomina
+            nomina.SalarioDiario = ObtenerSalarioDiario(nomina.Cargo); // Guardar el salario diario en la clase Nomina
             nomina.FechaRegistro = DateTime.Now;
 
             // Crear un nuevo trabajador
@@ -356,19 +367,32 @@ namespace WinFormsApp1
             string cargo = cmbCargo.SelectedItem.ToString();
             int diasLaborados = (int)nudDiasLaborados.Value;
             decimal salarioDiario = ObtenerSalarioDiario(cargo); // Aquí debes implementar la lógica para obtener el salario diario según el cargo seleccionado
+            string fecha = nomina.FechaRegistro.ToString();
+
 
             // Calcular el salario mensual
-            decimal salarioMensual = diasLaborados * salarioDiario;
+            decimal salarioMensual = nomina.CalcularSalario(diasLaborados, salarioDiario);
+
+            // Obtener la fecha actual
+             
 
             // Mostrar el mensaje con la información de la nómina
-            string mensaje = $"El señor {nombre} identificado con la cédula de ciudadanía número {identificacion} de género {genero} está contratado ejerciendo el cargo de {cargo}. Tiene una asignación diaria de su salario de {salarioDiario:C}, en el transcurso del mes trabajó {diasLaborados} días para un total devengado de {salarioMensual:C}.";
+            string mensaje = $"El señor {nombre} identificado con la cédula de ciudadanía número {identificacion} de género {genero} está contratado ejerciendo el cargo de {cargo}. Tiene una asignación diaria de su salario de {salarioDiario:C}, en el transcurso del mes trabajó {diasLaborados} días para un total devengado de {salarioMensual:C}. a la fecha actual {fecha}";
             MessageBox.Show(mensaje, "Cálculo de Nómina", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void BtnSalir_Click(object sender, EventArgs e)
         {
-            // Implementa la lógica para salir de la aplicación
-            Application.Exit();
+            string mensaje = "¿Está seguro que desea salir?";
+            DialogResult result = MessageBox.Show(mensaje, "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            
+            if (result == DialogResult.Yes)
+            {
+                
+                Application.Exit();
+            }
+
         }
 
         private void LimpiarCampos()
