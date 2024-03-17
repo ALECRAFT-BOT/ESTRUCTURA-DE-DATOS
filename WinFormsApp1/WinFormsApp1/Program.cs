@@ -21,7 +21,7 @@ namespace WinFormsApp1
             InitializeComponent();
         }
 
-        private void InitializeComponent()
+        public void InitializeComponent()
         {
             lblCurso = new Label();
             lblAuthor = new Label();
@@ -104,7 +104,7 @@ namespace WinFormsApp1
             PerformLayout();
         }
 
-        private void LoginButton_Click(object sender, EventArgs e)
+        public void LoginButton_Click(object sender, EventArgs e)
         {
             if (passwordTextBox.Text == contraseñaCorrecta)
             {
@@ -118,7 +118,7 @@ namespace WinFormsApp1
             }
         }
 
-        private void lblCurso_Click(object sender, EventArgs e)
+        public void lblCurso_Click(object sender, EventArgs e)
         {
 
         }
@@ -176,7 +176,7 @@ namespace WinFormsApp1
             InitializeComponent();
         }
 
-        private void InitializeComponent()
+        public void InitializeComponent()
         {
             
 
@@ -276,7 +276,7 @@ namespace WinFormsApp1
             Controls.Add(btnSalir);
         }
 
-        private void CmbCargo_SelectedIndexChanged(object sender, EventArgs e)
+        public void CmbCargo_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbCargo.SelectedItem != null)
             {
@@ -289,7 +289,7 @@ namespace WinFormsApp1
             }
         }
 
-        private decimal ObtenerSalarioDiario(string cargo)
+        public decimal ObtenerSalarioDiario(string cargo)
         {
             // Implementa la lógica para obtener el salario diario según el cargo
             switch (cargo)
@@ -310,7 +310,7 @@ namespace WinFormsApp1
         }
 
         
-        private void BtnGuardar_Click(object sender, EventArgs e)
+        public void BtnGuardar_Click(object sender, EventArgs e)
         {
             // Validar que todos los campos obligatorios estén completos
             if (string.IsNullOrEmpty(txtIdentificacion.Text) || string.IsNullOrEmpty(txtNombre.Text) || cmbGenero.SelectedIndex == -1 || cmbCargo.SelectedIndex == -1)
@@ -352,7 +352,7 @@ namespace WinFormsApp1
             LimpiarCampos();
         }
 
-        private void BtnCalcularNomina_Click(object sender, EventArgs e)
+        public void BtnCalcularNomina_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtNombre.Text) || string.IsNullOrEmpty(txtIdentificacion.Text) || cmbGenero.SelectedItem == null || cmbCargo.SelectedItem == null || nudDiasLaborados.Value == 0)
             {
@@ -381,7 +381,7 @@ namespace WinFormsApp1
             MessageBox.Show(mensaje, "Cálculo de Nómina", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void BtnSalir_Click(object sender, EventArgs e)
+        public void BtnSalir_Click(object sender, EventArgs e)
         {
             string mensaje = "¿Está seguro que desea salir?";
             DialogResult result = MessageBox.Show(mensaje, "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -395,7 +395,7 @@ namespace WinFormsApp1
 
         }
 
-        private void LimpiarCampos()
+        public void LimpiarCampos()
         {
             // Implementa la lógica para limpiar todos los campos del formulario
             txtIdentificacion.Text = "";
